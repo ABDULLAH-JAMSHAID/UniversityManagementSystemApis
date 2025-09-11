@@ -1,4 +1,4 @@
-package com.ums.app.controller;
+package com.ums.app.controller.auth;
 import com.google.gson.Gson;
 import com.ums.app.model.User;
 import com.ums.app.service.UserService;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Map;
 
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/api/auth/register"})

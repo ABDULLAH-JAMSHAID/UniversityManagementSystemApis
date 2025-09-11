@@ -1,5 +1,4 @@
-package com.ums.app.controller;
-
+package com.ums.app.controller.auth;
 import com.google.gson.Gson;
 import com.ums.app.service.UserService;
 import com.ums.app.util.JsonResponse;
@@ -9,12 +8,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
 @WebServlet(name = "LoginServlet", urlPatterns = {"/api/auth/login"})
 public class UserLogin extends HttpServlet {
 
@@ -48,6 +47,7 @@ public class UserLogin extends HttpServlet {
                 responseBody.put("token", response.getToken());
                 responseBody.put("role", response.getUser().getRole().name());
                 responseBody.put("username", response.getUser().getUsername());
+                responseBody.put("fullname",response.getUser().getFull_name());
                 JsonResponse.ok(resp, responseBody);
             } }catch (SQLException e) {
             JsonResponse.serverError(resp, "Database Error");

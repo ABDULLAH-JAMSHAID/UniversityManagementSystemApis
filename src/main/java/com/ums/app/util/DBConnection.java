@@ -19,7 +19,7 @@ public class DBConnection {
             config.setJdbcUrl(props.getProperty("db.url"));
             config.setUsername(props.getProperty("db.username"));
             config.setPassword(props.getProperty("db.password"));
-            config.setDriverClassName("org.postgresql.Driver"); // ✅ important line
+            config.setDriverClassName("org.postgresql.Driver"); //  important line
             config.setMaximumPoolSize(10);
             config.setMinimumIdle(2);
             config.setPoolName("AppHikariCP");

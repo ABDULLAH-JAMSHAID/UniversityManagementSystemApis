@@ -7,7 +7,6 @@ import com.ums.app.util.sql;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.function.Predicate;
 
 public class UserRepository {
 
@@ -92,6 +91,31 @@ public class UserRepository {
                 user.setFull_name(rs.getString("full_name"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("hashed_password"));
+                user.setRole(UserRole.valueOf(rs.getString("role")));
+                return user;
+
+            }
+
+        }
+        return null;
+
+    }
+
+    public User findById(int id) throws SQLException {
+
+        try(Connection connection=ds.getConnection();
+            PreparedStatement preparedStatement=connection.prepareStatement(sql.findUserById);){
+
+            preparedStatement.setInt(1,id);
+
+            ResultSet rs=preparedStatement.executeQuery();
+
+            if(rs.next()){
+                User user=new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setFull_name(rs.getString("full_name"));
+                user.setEmail(rs.getString("email"));
                 user.setRole(UserRole.valueOf(rs.getString("role")));
                 return user;
 

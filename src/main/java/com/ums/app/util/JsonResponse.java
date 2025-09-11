@@ -15,41 +15,41 @@ public class JsonResponse {
         resp.getWriter().write(gson.toJson(body));
     }
 
-    // ✅ Success response (200 OK)
+    //  Success response (200 OK)
     public static void ok(HttpServletResponse resp, Object body) throws IOException {
         write(resp, HttpServletResponse.SC_OK, body);
     }
 
-    // ✅ Created response (201 Created)
+    //  Created response (201 Created)
     public static void created(HttpServletResponse resp, Object body) throws IOException {
         write(resp, HttpServletResponse.SC_CREATED, body);
     }
 
-    // ✅ Bad Request (400)
+    //  Bad Request (400)
     public static void badRequest(HttpServletResponse resp, String message) throws IOException {
         write(resp, HttpServletResponse.SC_BAD_REQUEST, Map.of("error", message));
     }
-    // ✅ conflict Request (409)
+    //  conflict Request (409)
     public static void conflict(HttpServletResponse resp, String message) throws IOException {
         write(resp, HttpServletResponse.SC_CONFLICT, Map.of("error", message));
     }
 
-    // ✅ Unauthorized (401)
+    //  Unauthorized (401)
     public static void unauthorized(HttpServletResponse resp, String message) throws IOException {
         write(resp, HttpServletResponse.SC_UNAUTHORIZED, Map.of("error", message));
     }
 
-    // ✅ Forbidden (403)
+    //  Forbidden (403)
     public static void forbidden(HttpServletResponse resp, String message) throws IOException {
         write(resp, HttpServletResponse.SC_FORBIDDEN, Map.of("error", message));
     }
 
-    // ✅ Not Found (404)
+    //  Not Found (404)
     public static void notFound(HttpServletResponse resp, String message) throws IOException {
         write(resp, HttpServletResponse.SC_NOT_FOUND, Map.of("error", message));
     }
 
-    // ✅ Internal Server Error (500)
+    //  Internal Server Error (500)
     public static void serverError(HttpServletResponse resp, String message) throws IOException {
         write(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Map.of("error", message));
     }

@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/api/auth/profile"})
+@WebFilter(urlPatterns = {"/api/*"})
 public class AuthFilter implements Filter {
 
     @Override
@@ -21,6 +21,12 @@ public class AuthFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+        String path = req.getRequestURI();
+
+        if (path.endsWith("/api/auth/login") || path.endsWith("/api/auth/register")) {
+            chain.doFilter(request, response);
+            return;
+        }
         String auth = req.getHeader("Authorization");
         if (auth == null || !auth.startsWith("Bearer ")) {
             res.setStatus(401);
