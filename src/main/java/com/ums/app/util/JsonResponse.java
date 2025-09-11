@@ -29,6 +29,10 @@ public class JsonResponse {
     public static void badRequest(HttpServletResponse resp, String message) throws IOException {
         write(resp, HttpServletResponse.SC_BAD_REQUEST, Map.of("error", message));
     }
+    // ✅ conflict Request (409)
+    public static void conflict(HttpServletResponse resp, String message) throws IOException {
+        write(resp, HttpServletResponse.SC_CONFLICT, Map.of("error", message));
+    }
 
     // ✅ Unauthorized (401)
     public static void unauthorized(HttpServletResponse resp, String message) throws IOException {
