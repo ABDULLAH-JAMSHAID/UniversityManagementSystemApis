@@ -19,6 +19,19 @@ public class sql {
 
     public static final String deleteUser="delete from ums.users where id=?";
 
+    public static final String getAllUsers="select * from ums.users where role=?";
+
+    public static final String addNewCourse="insert into ums.courses (code,title,credit_hours ) VALUES (?,?,?)";
+
+    public static final String checkCourseByCode="select * from ums.courses where code=?";
+
+    public static final String checkCourseById="select * from ums.courses where id=?";
+
+    public static final String getAllCourses="select * from ums.courses";
+
+    public static final String updateCourse="update ums.courses set code=? , title=? , credit_hours=? where id=?";
+
+
 
 }
 

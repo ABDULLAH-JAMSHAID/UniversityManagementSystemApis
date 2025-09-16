@@ -36,11 +36,6 @@ public class UpdateUserProfile extends HttpServlet {
             String roles=(String) claims.get("roles");
             int uid=(int )claims.get("uid");
 
-//            if ("teacher".equals(roles)){
-//                JsonResponse.forbidden(resp,"Invalid Request");
-//                return;
-//            }
-
 
             String pathInfo=req.getPathInfo();
             if (pathInfo == null || pathInfo.equals("/")) {

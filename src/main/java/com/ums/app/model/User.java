@@ -1,5 +1,6 @@
 package com.ums.app.model;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 
 public class User {
@@ -16,7 +17,7 @@ public class User {
 
     private UserRole role;
 
-    private Date date;
+    private Timestamp registeredAt;
 
     public User() {
     }
@@ -29,14 +30,21 @@ public class User {
         this.role = role;
     }
 
-    public User(String username, int id, String full_name, String email, String password, UserRole role, Date date) {
-        this.username = username;
+    public User( int id,String username, String full_name, String email, UserRole role, Timestamp registeredAt) {
         this.id = id;
+        this.username = username;
         this.full_name = full_name;
         this.email = email;
-        this.password = password;
         this.role = role;
-        this.date = date;
+        this.registeredAt=registeredAt;
+    }
+
+    public Timestamp getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(Timestamp registeredAt) {
+        this.registeredAt = registeredAt;
     }
 
     public int getId() {
@@ -77,14 +85,6 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public String getPassword() {
