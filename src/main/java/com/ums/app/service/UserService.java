@@ -6,6 +6,7 @@ import com.ums.app.repository.UserRepository;
 import com.ums.app.util.JwtUtil;
 import com.ums.app.util.LoginResponse;
 import com.ums.app.util.PasswordUtil;
+import jakarta.servlet.http.Cookie;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -51,8 +52,17 @@ public class UserService {
         Map <String,Object> claims=new HashMap<>();
         claims.put("roles",user.getRole());
         claims.put("uid",user.getId());
-        String token=JwtUtil.generateToken(user.getUsername(),claims);
-        return new LoginResponse(token,user);
+
+        String accessToken = JwtUtil.generateAccessToken(user.getUsername(),claims);
+        String refreshToken = JwtUtil.generateRefreshToken(user.getUsername());
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true); // Production (HTTPS) mein true hoga
+        refreshTokenCookie.setPath("/api/auth/refresh"); // Refresh endpoint ka path
+        refreshTokenCookie.setMaxAge((int) (JwtUtil.extractExpiration(refreshToken).getTime() - System.currentTimeMillis()) / 1000);
+
+        return new LoginResponse(accessToken,user);
 
 
 

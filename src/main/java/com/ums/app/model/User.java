@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 
 public class User {
 
+    private int tokenVersion;
+
     private int id;
 
     private String username;
@@ -37,6 +39,13 @@ public class User {
         this.email = email;
         this.role = role;
         this.registeredAt=registeredAt;
+    }
+    public int getTokenVersion() {
+        return tokenVersion;
+    }
+
+    public void setTokenVersion(int tokenVersion) {
+        this.tokenVersion = tokenVersion;
     }
 
     public Timestamp getRegisteredAt() {

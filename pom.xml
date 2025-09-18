@@ -16,6 +16,21 @@
       <version>1.5.6</version> <!-- latest stable -->
     </dependency>
 
+    <!-- Redis Client: Jedis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>4.2.3</version>
+    </dependency>
+
+    <!-- Password Hashing: BCrypt (aap pehle se use kar rahe hain) -->
+    <dependency>
+      <groupId>at.favre.lib</groupId>
+      <artifactId>bcrypt</artifactId>
+      <version>0.10.2</version>
+    </dependency>
+
+
 
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
@@ -78,11 +93,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <dependency>
-      <groupId>at.favre.lib</groupId>
-      <artifactId>bcrypt</artifactId>
-      <version>0.9.0</version>
-    </dependency>
+
 
     <dependency>
       <groupId>com.zaxxer</groupId>
