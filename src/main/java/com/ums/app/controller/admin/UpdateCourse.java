@@ -14,22 +14,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 
-@WebServlet(name = "UpdateCourse", urlPatterns = "/api/updateCourse/*")
+@WebServlet(name = "UpdateCourse", urlPatterns = "/api/auth/updateCourse/*")
 public class UpdateCourse extends HttpServlet {
 
     private final AdminService adminService=new AdminService();
     private final Gson gson=new Gson();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        Claims claims=(Claims)req.getAttribute("claims");
-        Object roles = claims.get("roles");
-        Object uid = claims.get("uid");
-
-        if (!roles.equals("admin")){
-            JsonResponse.forbidden(resp,"Access Denied");
-            return;
-        }
 
         String pathInfo=req.getPathInfo();
 

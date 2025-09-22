@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "GetAllCourses", urlPatterns = "/api/getAllCourses")
+@WebServlet(name = "GetAllCourses", urlPatterns = "/api/auth/getAllCourses")
 public class GetAllCourses extends HttpServlet {
 
     private final AdminService adminService=new AdminService();
@@ -23,14 +23,7 @@ public class GetAllCourses extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Claims claims=(Claims)req.getAttribute("claims");
-        String role=(String)claims.get("roles");
         int id=(int)claims.get("uid");
-
-        if (role.equals("students") || role.equals("teacher")){
-            JsonResponse.forbidden(resp,"Access Denied");
-            return;
-        }
-
         List<Courses> courses;
         try {
             courses = adminService.getAllCourses();

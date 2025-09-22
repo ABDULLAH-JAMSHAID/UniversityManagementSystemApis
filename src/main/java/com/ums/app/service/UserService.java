@@ -1,7 +1,7 @@
 package com.ums.app.service;
 
+import com.google.gson.JsonDeserializationContext;
 import com.ums.app.model.User;
-import com.ums.app.model.UserRole;
 import com.ums.app.repository.UserRepository;
 import com.ums.app.util.JwtUtil;
 import com.ums.app.util.LoginResponse;
@@ -10,29 +10,57 @@ import jakarta.servlet.http.Cookie;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserService {
 
     private final UserRepository userRepository=new UserRepository();
 
-    public User registerUser(String userName, String fullName, String email, String password, String role) throws SQLException {
+    public User registerStudent(String userName, String fullName, String email, String password) throws SQLException {
 
         User user=new User();
 
         String hashPassword= PasswordUtil.hash(password);
 
         user.setUsername(userName);
-        user.setFull_name(fullName);
+        user.setFull_name(email);
         user.setEmail(email);
         user.setPassword(hashPassword);
-        user.setRole(UserRole.valueOf(role));
-        int id= userRepository.saveUser(user);
-        if (id==-1){
-            user.setId(-1);
-            return user;
+        int userId= userRepository.saveUser(user);
+
+        if (userId==-1){
+            return null;
         }
-        user.setId(id);
+        boolean ok=userRepository.saveStudent(userId);
+        if (ok){
+            userRepository.assignRole(userId,1); // 1 for student
+            user.setId(userId);
+        }
+        return user;
+
+    }
+
+    public User registerTeacher(String userName, String fullName, String email, String password) throws SQLException {
+
+        User user=new User();
+
+        String hashPassword= PasswordUtil.hash(password);
+
+        user.setUsername(userName);
+        user.setFull_name(email);
+        user.setEmail(email);
+        user.setPassword(hashPassword);
+        int userId= userRepository.saveUser(user);
+
+        if (userId==-1){
+            return null;
+        }
+        boolean ok=userRepository.saveTeacher(userId);
+        if (ok){
+            userRepository.assignRole(userId,2); // 1 for student
+            user.setId(userId);
+        }
         return user;
 
     }
@@ -49,8 +77,9 @@ public class UserService {
             return null;
         }
 
+        List<String> roles=userRepository.getUserRoles(user.getId());
+
         Map <String,Object> claims=new HashMap<>();
-        claims.put("roles",user.getRole());
         claims.put("uid",user.getId());
 
         String accessToken = JwtUtil.generateAccessToken(user.getUsername(),claims);
@@ -62,7 +91,11 @@ public class UserService {
         refreshTokenCookie.setPath("/api/auth/refresh"); // Refresh endpoint ka path
         refreshTokenCookie.setMaxAge((int) (JwtUtil.extractExpiration(refreshToken).getTime() - System.currentTimeMillis()) / 1000);
 
-        return new LoginResponse(accessToken,user);
+        User user1=new User();
+        user1.setId(user.getId());
+        user1.setUsername(user.getUsername());
+
+        return new  LoginResponse(user1,roles,accessToken,refreshToken);
 
 
 

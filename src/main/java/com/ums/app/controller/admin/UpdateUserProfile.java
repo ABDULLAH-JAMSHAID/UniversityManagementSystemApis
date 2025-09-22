@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
-@WebServlet(name = "Update User Profile",urlPatterns = "/api/updateUserProfile/*")
+@WebServlet(name = "Update User Profile",urlPatterns = "/api/auth/updateUserProfile/*")
 public class UpdateUserProfile extends HttpServlet {
 
     private final Gson gson=new Gson();
@@ -33,7 +33,6 @@ public class UpdateUserProfile extends HttpServlet {
 
             Claims claims=(Claims)req.getAttribute("claims");
 
-            String roles=(String) claims.get("roles");
             int uid=(int )claims.get("uid");
 
 

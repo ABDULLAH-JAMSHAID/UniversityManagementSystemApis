@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
-@WebServlet(name = "AddNewCourse" , urlPatterns = "/api/addNewCourse")
+@WebServlet(name = "AddNewCourse" , urlPatterns = "/api/auth/addNewCourse")
 public class AddNewCourse extends HttpServlet {
 
     private final Gson gson=new Gson();
@@ -26,13 +26,7 @@ public class AddNewCourse extends HttpServlet {
         try(BufferedReader reader=req.getReader()){
 
             Claims claims=(Claims)req.getAttribute("claims");
-            String role=(String)claims.get("roles");
             int uid=(int)claims.get("uid");
-
-            if (!role.equals("admin")){
-                JsonResponse.forbidden(resp,"Access Denied");
-                return;
-            }
 
 
             Map body=gson.fromJson(reader,Map.class);

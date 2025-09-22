@@ -13,22 +13,32 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "ViewUserProfile", urlPatterns = {"/api/viewUser/*"})
+@WebServlet(name = "ViewUserProfile", urlPatterns = {"/api/auth/viewUser/*"})
 public class ViewUserProfile extends HttpServlet {
 
-    private final Gson gson=new Gson();
-    private final StudentService studentService=new StudentService();
+    private final Gson gson = new Gson();
+    private final StudentService studentService = new StudentService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            // Claims filter se aane chahiye
+            Claims claims = (Claims) req.getAttribute("claims");
 
-        try{
+            if (claims == null) {
+                JsonResponse.unauthorized(resp, "Unauthorized: Missing or invalid token");
+                return;
+            }
 
-            Claims claims=(Claims)req.getAttribute("claims");
+            // Safely extract values
+            Integer uid = claims.get("uid", Integer.class);
 
-            String roles=(String) claims.get("roles");
-            int uid=(int )claims.get("uid");
+            if (uid == null) {
+                JsonResponse.unauthorized(resp, "Invalid token: user id missing");
+                return;
+            }
 
+            // URL se /{id} nikalna
             String pathInfo = req.getPathInfo(); // e.g. "/5"
             if (pathInfo == null || pathInfo.equals("/")) {
                 JsonResponse.badRequest(resp, "Please provide ID in URL");
@@ -43,23 +53,22 @@ public class ViewUserProfile extends HttpServlet {
                 return;
             }
 
-            if (id!=uid) {
-                JsonResponse.forbidden(resp, "You can Only View Your Own Profile");
+            // Check: user sirf apna hi profile dekh sake
+            if (id != uid) {
+                JsonResponse.forbidden(resp, "You can only view your own profile");
                 return;
-            }
-            User user=studentService.viewUserProfile(id);
-            if (user==null){
-                JsonResponse.notFound(resp,"No Such User Found");
-                return;
-            }
-            else {
-                JsonResponse.ok(resp,user);
             }
 
+            // Service se user nikalna
+            User user = studentService.viewUserProfile(id);
+            if (user == null) {
+                JsonResponse.notFound(resp, "No such user found");
+            } else {
+                JsonResponse.ok(resp, user);
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

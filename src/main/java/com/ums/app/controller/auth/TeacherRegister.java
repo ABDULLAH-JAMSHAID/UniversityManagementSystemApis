@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/api/auth/register"})
-public class UserRegister extends HttpServlet {
+@WebServlet(name = "TeacherRegister", urlPatterns = {"/api/auth/register/teacher"})
+public class TeacherRegister extends HttpServlet {
 
     private final Gson gson=new Gson();
 
@@ -32,15 +32,17 @@ public class UserRegister extends HttpServlet {
             String fullName =(String) body.get("full_name");
             String email =(String) body.get("email");
             String password =(String) body.get("password");
-            String role = (String) body.get("role");
 
-            if (userName ==null || fullName == null || email == null || password== null || role==null ){
+            if (userName ==null || fullName == null || email == null || password== null ){
                 JsonResponse.badRequest(resp,"Missing Fields");
                 return;
             }
 
             try{
-                User user =userRegisterService.registerUser(userName.trim(),fullName,email.trim().toLowerCase(),password,role.trim());
+                User user =userRegisterService.registerTeacher(userName.trim(),fullName,email.trim().toLowerCase(),password);
+                if (user!=null){
+                    JsonResponse.ok(resp,"Teacher Registered Successfully. Please Login");
+                }
             }catch (SQLException e) {
                 if (e instanceof org.postgresql.util.PSQLException && "23505".equals(e.getSQLState())) {
                     // Duplicate email or username

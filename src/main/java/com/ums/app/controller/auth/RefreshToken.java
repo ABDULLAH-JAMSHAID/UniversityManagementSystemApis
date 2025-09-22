@@ -58,8 +58,7 @@ public class RefreshToken extends HttpServlet {
             }
 
             // 3. Naye access token ke liye claims tayyar karein
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("roles", user.getRole()); // Aapke User model ke mutabiq
+            Map<String, Object> claims = new HashMap<>();// Aapke User model ke mutabiq
             claims.put("uid", user.getId());     // Aapke User model ke mutabiq
 
             // 4. Sirf naya ACCESS TOKEN generate karein

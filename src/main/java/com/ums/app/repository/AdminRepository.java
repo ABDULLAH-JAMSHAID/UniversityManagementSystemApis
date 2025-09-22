@@ -2,7 +2,6 @@ package com.ums.app.repository;
 
 import com.ums.app.model.Courses;
 import com.ums.app.model.User;
-import com.ums.app.model.UserRole;
 import com.ums.app.util.DBConnection;
 import com.ums.app.util.sql;
 import javax.sql.DataSource;
@@ -51,8 +50,6 @@ public class AdminRepository {
                 user.setUsername(rs.getString("username"));
                 user.setFull_name(rs.getString("full_name"));
                 user.setEmail(rs.getString("email"));
-                user.setRole(UserRole.valueOf(rs.getString("role")));
-                user.setRegisteredAt(rs.getTimestamp("registered_at"));
                 users.add(user);
             }
             return users;

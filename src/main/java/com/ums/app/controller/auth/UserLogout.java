@@ -1,5 +1,6 @@
 package com.ums.app.controller.auth;
 
+import com.ums.app.util.JsonResponse;
 import com.ums.app.util.JwtUtil;
 import com.ums.app.util.RedisUtil;
 import jakarta.servlet.annotation.WebServlet;
@@ -58,8 +59,6 @@ public class UserLogout extends HttpServlet {
         clearCookie.setMaxAge(0);
         resp.addCookie(clearCookie);
 
-        resp.setStatus(HttpServletResponse.SC_OK);
-        resp.setContentType("application/json");
-        resp.getWriter().write("{\"message\": \"Logged out successfully\"}");
+        JsonResponse.ok(resp,"Logged out successfully");
     }
 }

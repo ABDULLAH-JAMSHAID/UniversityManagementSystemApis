@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 
-@WebServlet(name = "DeleteStudentAndTeacher", urlPatterns = "/api/deleteUser/*")
+@WebServlet(name = "DeleteStudentAndTeacher", urlPatterns = "/api/auth/deleteUser/*")
 public class DeleteUser extends HttpServlet {
 
     private final Gson gson=new Gson();
@@ -23,12 +23,7 @@ public class DeleteUser extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Claims claims=(Claims) req.getAttribute("claims");
-        String roles = (String)claims.get("roles");
         int uid=(int)claims.get("uid");
-        if ("student".equals(roles) || "teacher".equals(roles)){
-            JsonResponse.forbidden(resp,"Access Denied");
-            return;
-        }
 
         String pathInfo=req.getPathInfo();
 

@@ -2,17 +2,23 @@ package com.ums.app.util;
 
 public class sql {
 
-    public static final String registerUser = "insert into ums.users (username,full_name,email,hashed_password,role) \n" +
-            "VALUES (?,?,?,?,?);";
+    public static final String registerUser = "insert into ums.users (username,full_name,email,hashed_password)\n" +
+            "VALUES (?,?,?,?) RETURNING id ;";
 
     public static final String insertStudent = "insert into ums.students (user_id) VALUES (?);";
 
+    public static final String assignRole="insert into ums.user_roles VALUES(?,?)";
+
     public static final String insertTeacher = "insert into ums.teachers (user_id) VALUES (?);";
 
-    public static final String findByUsername = "select id,username,full_name,email,hashed_password,role \n" +
+    public static final String findByUsername = "select id,username,full_name,email,hashed_password\n" +
             "from ums.users where username=?";
 
-    public static final String findUserById = "select id,username,full_name,email,role \n" +
+    public static final String getUserRoles ="select r.name from ums.roles r\n" +
+            "join ums.user_roles ur on r.id=ur.role_id\n" +
+            "where ur.user_id=?";
+
+    public static final String findUserById = "select id,username,full_name,email \n" +
             "from ums.users where id=?";
 
     public static final String updateUserProfile = "update ums.users set username=? ,full_name=? , email=? where id=?;";
