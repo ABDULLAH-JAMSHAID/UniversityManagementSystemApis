@@ -8,7 +8,10 @@ public class User {
     private String email;
     private String password;
 
-    public User() {}
+    public User (){
+
+    }
+
 
     public User(int id, String username, String full_name, String email, String password) {
         this.id = id;
@@ -64,4 +67,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

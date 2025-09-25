@@ -3,6 +3,7 @@ package com.ums.app.controller.admin;
 import com.ums.app.model.User;
 import com.ums.app.service.AdminService;
 import com.ums.app.util.JsonResponse;
+import com.ums.app.util.PermissionUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-@WebServlet(name = "GetAllUsers", urlPatterns = "/api/auth/getAllUsers/*")
+@WebServlet(name = "GetAllUsers", urlPatterns = "/api/getAllUsers/*")
 public class GetAllUsers extends HttpServlet {
 
     private final AdminService adminService=new AdminService();

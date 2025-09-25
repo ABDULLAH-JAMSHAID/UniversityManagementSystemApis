@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
-@WebServlet(name = "AddNewCourse" , urlPatterns = "/api/auth/addNewCourse")
+@WebServlet(name = "AddNewCourse" , urlPatterns = "/api/addCourse")
 public class AddNewCourse extends HttpServlet {
 
     private final Gson gson=new Gson();

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.ums.app.model.User;
 import com.ums.app.service.StudentService;
 import com.ums.app.util.JsonResponse;
+import com.ums.app.util.PermissionUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "ViewUserProfile", urlPatterns = {"/api/auth/viewUser/*"})
+@WebServlet(name = "ViewUserProfile", urlPatterns = {"/api/viewUserProfile/*"})
 public class ViewUserProfile extends HttpServlet {
 
     private final Gson gson = new Gson();
@@ -22,15 +23,16 @@ public class ViewUserProfile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+
             // Claims filter se aane chahiye
             Claims claims = (Claims) req.getAttribute("claims");
+
 
             if (claims == null) {
                 JsonResponse.unauthorized(resp, "Unauthorized: Missing or invalid token");
                 return;
             }
 
-            // Safely extract values
             Integer uid = claims.get("uid", Integer.class);
 
             if (uid == null) {
@@ -53,7 +55,7 @@ public class ViewUserProfile extends HttpServlet {
                 return;
             }
 
-            // Check: user sirf apna hi profile dekh sake
+
             if (id != uid) {
                 JsonResponse.forbidden(resp, "You can only view your own profile");
                 return;

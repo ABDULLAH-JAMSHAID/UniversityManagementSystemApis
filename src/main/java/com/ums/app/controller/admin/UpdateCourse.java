@@ -3,7 +3,6 @@ package com.ums.app.controller.admin;
 import com.google.gson.Gson;
 import com.ums.app.service.AdminService;
 import com.ums.app.util.JsonResponse;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 
-@WebServlet(name = "UpdateCourse", urlPatterns = "/api/auth/updateCourse/*")
+@WebServlet(name = "UpdateCourse", urlPatterns = "/api/updateCourse/*")
 public class UpdateCourse extends HttpServlet {
 
     private final AdminService adminService=new AdminService();

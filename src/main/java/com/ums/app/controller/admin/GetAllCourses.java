@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "GetAllCourses", urlPatterns = "/api/auth/getAllCourses")
+@WebServlet(name = "GetAllCourses", urlPatterns = "/api/getAllCourses")
 public class GetAllCourses extends HttpServlet {
 
     private final AdminService adminService=new AdminService();

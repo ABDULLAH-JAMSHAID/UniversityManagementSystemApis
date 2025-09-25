@@ -14,9 +14,10 @@ public class sql {
     public static final String findByUsername = "select id,username,full_name,email,hashed_password\n" +
             "from ums.users where username=?";
 
-    public static final String getUserRoles ="select r.name from ums.roles r\n" +
-            "join ums.user_roles ur on r.id=ur.role_id\n" +
-            "where ur.user_id=?";
+    public static final String getUserRoles ="SELECT g.name\n" +
+            "FROM ums.groups g\n" +
+            "JOIN ums.user_groups ug ON g.id = ug.group_id\n" +
+            "WHERE ug.user_id = ?;";
 
     public static final String findUserById = "select id,username,full_name,email \n" +
             "from ums.users where id=?";
@@ -36,6 +37,13 @@ public class sql {
     public static final String getAllCourses="select * from ums.courses";
 
     public static final String updateCourse="update ums.courses set code=? , title=? , credit_hours=? where id=?";
+
+    public static final String userHasPermission="SELECT DISTINCT p.name AS permission_name\n" +
+            "FROM ums.users u\n" +
+            "JOIN ums.user_groups ug ON u.id = ug.user_id\n" +
+            "JOIN ums.group_permissions gp ON ug.group_id = gp.group_id\n" +
+            "JOIN ums.permissions p ON gp.permission_id = p.id\n" +
+            "WHERE u.id = ?;";
 
 
 

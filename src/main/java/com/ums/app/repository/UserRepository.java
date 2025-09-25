@@ -1,12 +1,15 @@
 package com.ums.app.repository;
 
+import com.ums.app.model.Permission;
 import com.ums.app.model.User;
 import com.ums.app.util.DBConnection;
 import com.ums.app.util.sql;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserRepository {
 
@@ -181,6 +184,45 @@ public class UserRepository {
         }
         return null;
     }
+
+    public boolean userHasPermission(int userId, String permissionName) {
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.userHasPermission)) {
+            ps.setString(1, permissionName);
+            ps.setInt(2, userId);
+            ps.setInt(3, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error checking permission", e);
+        }
+    }
+
+    public Set<Permission> findPermissionsByUserId(Long userId) {
+        Set<Permission> permissions = new HashSet<>();
+
+        try (Connection conn = ds.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql.userHasPermission)) {
+
+            stmt.setLong(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String permName = rs.getString("permission_name");
+                permissions.add(Permission.valueOf(permName));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return permissions;
+    }
+
+
 
 
 }

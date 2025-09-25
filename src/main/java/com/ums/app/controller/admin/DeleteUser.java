@@ -2,6 +2,7 @@ package com.ums.app.controller.admin;
 import com.google.gson.Gson;
 import com.ums.app.service.AdminService;
 import com.ums.app.util.JsonResponse;
+import com.ums.app.util.PermissionUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 
-@WebServlet(name = "DeleteStudentAndTeacher", urlPatterns = "/api/auth/deleteUser/*")
+@WebServlet(name = "DeleteStudentAndTeacher", urlPatterns = "/api/deleteUser/*")
 public class DeleteUser extends HttpServlet {
 
     private final Gson gson=new Gson();
@@ -36,6 +37,10 @@ public class DeleteUser extends HttpServlet {
              id=Integer.parseInt(pathInfo.substring(1));
         } catch (NumberFormatException e) {
             JsonResponse.badRequest(resp,"Please Provide Valid Id In url");
+            return;
+        }
+        if (id==uid){
+            JsonResponse.forbidden(resp,"You Can't Delete Your Own Account");
             return;
         }
         try {

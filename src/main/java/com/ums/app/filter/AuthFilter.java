@@ -2,6 +2,7 @@ package com.ums.app.filter;
 
 import com.ums.app.util.JsonResponse;
 import com.ums.app.util.JwtUtil;
+import com.ums.app.util.PermissionUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -10,7 +11,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-@WebFilter("/api/auth/*")
+@WebFilter("/api/*")
 public class AuthFilter implements Filter {
 
     @Override
@@ -22,8 +23,9 @@ public class AuthFilter implements Filter {
 
         String path = req.getRequestURI();
 
-        if (path.endsWith("/api/auth/login") || path.endsWith("/api/auth/register/teacher") || path.endsWith("/api/auth/register/student")) {
-            chain.doFilter(request, response); // login/register skip
+        if (path.endsWith("/api/auth/login") || path.endsWith("/api/auth/register/teacher") || path.endsWith("/api/auth/register/student") || path.endsWith("/api/auth/forgot-password") || path.endsWith("/api/auth/logout")
+        || path.contains("/api/auth/refresh")) {
+            chain.doFilter(request, response);
             return;
         }
 
@@ -45,10 +47,11 @@ public class AuthFilter implements Filter {
             Jws<Claims> jws = JwtUtil.parseToken(token);
             Claims claims = jws.getBody();
 
-            // claims attach kardo request me
             req.setAttribute("claims", claims);
 
-            // ab chain continue karega -> AuthorizationFilter chalega next
+            if (!PermissionUtil.checkPermission(req, res)) {
+                return;
+            }
             chain.doFilter(request, response);
 
         } catch (JwtException e) {

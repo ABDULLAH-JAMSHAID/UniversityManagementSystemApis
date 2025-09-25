@@ -37,10 +37,4 @@ public class RedisUtil {
             return jedis.exists(BLACKLIST_PREFIX + token);
         }
     }
-
-    public static void closePool() {
-        if (pool != null) {
-            pool.close();
-        }
-    }
 }
