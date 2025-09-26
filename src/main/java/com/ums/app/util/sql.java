@@ -2,7 +2,7 @@ package com.ums.app.util;
 
 public class sql {
 
-    public static final String registerUser = "insert into ums.users (username,full_name,email,hashed_password)\n" +
+    public static final String registerUser ="insert into ums.users (username,full_name,email,hashed_password)\n" +
             "VALUES (?,?,?,?) RETURNING id ;";
 
     public static final String insertStudent = "insert into ums.students (user_id) VALUES (?);";
@@ -38,15 +38,12 @@ public class sql {
 
     public static final String updateCourse="update ums.courses set code=? , title=? , credit_hours=? where id=?";
 
-    public static final String userHasPermission="SELECT DISTINCT p.name AS permission_name\n" +
-            "FROM ums.users u\n" +
-            "JOIN ums.user_groups ug ON u.id = ug.user_id\n" +
-            "JOIN ums.group_permissions gp ON ug.group_id = gp.group_id\n" +
-            "JOIN ums.permissions p ON gp.permission_id = p.id\n" +
-            "WHERE u.id = ?;";
-
-
-
+    public static final String userHasPermission="SELECT DISTINCT p.name AS permission_name \n" +
+            "FROM ums.users u \n" +
+            "JOIN ums.user_groups ug ON u.id = ug.user_id \n" +
+            "JOIN ums.group_permissions gp ON ug.group_id = gp.group_id \n" +
+            "JOIN ums.permissions p ON gp.permission_id = p.id \n" +
+            "WHERE u.id=?";
 }
 
 

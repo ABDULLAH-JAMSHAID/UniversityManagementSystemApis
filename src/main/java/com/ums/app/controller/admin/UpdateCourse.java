@@ -1,6 +1,8 @@
 package com.ums.app.controller.admin;
 
 import com.google.gson.Gson;
+import com.ums.app.annotation.RequiresPermission;
+import com.ums.app.model.Permission;
 import com.ums.app.service.AdminService;
 import com.ums.app.util.JsonResponse;
 import jakarta.servlet.ServletException;
@@ -19,6 +21,7 @@ public class UpdateCourse extends HttpServlet {
     private final AdminService adminService=new AdminService();
     private final Gson gson=new Gson();
     @Override
+    @RequiresPermission(Permission.UPDATE_COURSE)
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String pathInfo=req.getPathInfo();

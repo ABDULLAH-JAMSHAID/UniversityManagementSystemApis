@@ -1,10 +1,11 @@
 package com.ums.app.controller.admin;
 
 import com.google.gson.Gson;
+import com.ums.app.annotation.RequiresPermission;
+import com.ums.app.model.Permission;
 import com.ums.app.model.User;
 import com.ums.app.service.StudentService;
 import com.ums.app.util.JsonResponse;
-import com.ums.app.util.PermissionUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,6 +23,7 @@ public class UpdateUserProfile extends HttpServlet {
     private final StudentService studentService=new StudentService();
 
     @Override
+    @RequiresPermission(Permission.UPDATE_USER_PROFILE)
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try(BufferedReader reader=req.getReader()){

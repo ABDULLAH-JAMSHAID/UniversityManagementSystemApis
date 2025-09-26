@@ -1,6 +1,8 @@
 package com.ums.app.controller.admin;
 
+import com.ums.app.annotation.RequiresPermission;
 import com.ums.app.model.Courses;
+import com.ums.app.model.Permission;
 import com.ums.app.service.AdminService;
 import com.ums.app.util.JsonResponse;
 import io.jsonwebtoken.Claims;
@@ -20,6 +22,7 @@ public class GetAllCourses extends HttpServlet {
     private final AdminService adminService=new AdminService();
 
     @Override
+    @RequiresPermission(Permission.GET_ALL_COURSES)
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Claims claims=(Claims)req.getAttribute("claims");
