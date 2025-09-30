@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "GetAllCourses", urlPatterns = "/api/getAllCourses")
-public class GetAllCourses extends HttpServlet {
+public class GetAllCourses extends BaseServlet {
 
     private final AdminService adminService=new AdminService();
 
@@ -37,7 +37,7 @@ public class GetAllCourses extends HttpServlet {
                 JsonResponse.ok(resp,courses);
             }
         } catch (SQLException e) {
-            JsonResponse.serverError(resp,"Internal Server Error");
+            throw new ServletException(e);
         }
 
 

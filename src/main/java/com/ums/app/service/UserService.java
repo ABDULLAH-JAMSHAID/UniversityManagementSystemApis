@@ -34,7 +34,7 @@ public class UserService {
         }
         boolean ok=userRepository.saveStudent(userId);
         if (ok){
-            userRepository.assignRole(userId,1); // 1 for student
+            userRepository.assignRole(userId,3); // 1 for student
             user.setId(userId);
         }
         return user;
@@ -58,7 +58,7 @@ public class UserService {
         }
         boolean ok=userRepository.saveTeacher(userId);
         if (ok){
-            userRepository.assignRole(userId,2); // 1 for student
+            userRepository.assignRole(userId,2); // 1 for teacher
             user.setId(userId);
         }
         return user;

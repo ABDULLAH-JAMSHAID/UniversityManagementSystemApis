@@ -4,27 +4,26 @@ import com.google.gson.Gson;
 import com.ums.app.annotation.RequiresPermission;
 import com.ums.app.model.Permission;
 import com.ums.app.model.User;
+import com.ums.app.repository.UserRepository;
 import com.ums.app.service.StudentService;
 import com.ums.app.util.JsonResponse;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet(name = "ViewUserProfile", urlPatterns = {"/api/viewUserProfile/*"})
-public class ViewUserProfile extends HttpServlet {
+public class ViewUserProfile extends BaseServlet {
 
     private final Gson gson = new Gson();
     private final StudentService studentService = new StudentService();
+    private  final UserRepository userRepository=new UserRepository();
 
     @Override
     @RequiresPermission(Permission.VIEW_USER_PROFILE)
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
 
             // Claims filter se aane chahiye
             Claims claims = (Claims) req.getAttribute("claims");
@@ -49,19 +48,21 @@ public class ViewUserProfile extends HttpServlet {
                 return;
             }
 
-            int id;
-            try {
-                id = Integer.parseInt(pathInfo.substring(1)); // remove "/"
-            } catch (NumberFormatException e) {
+
+
+               int id = Integer.parseInt(pathInfo.substring(1)); // remove "/"
+
                 JsonResponse.badRequest(resp, "Invalid ID format");
-                return;
-            }
 
 
-            if (id != uid) {
-                JsonResponse.forbidden(resp, "You can only view your own profile");
-                return;
+
+            if(!userRepository.getUserRoles(uid).contains("ADMIN")){
+                if (id!=uid) {
+                    JsonResponse.forbidden(resp, "You can only Update your Own profile");
+                    return;
+                }
             }
+
 
             // Service se user nikalna
             User user = studentService.viewUserProfile(id);
@@ -70,9 +71,5 @@ public class ViewUserProfile extends HttpServlet {
             } else {
                 JsonResponse.ok(resp, user);
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

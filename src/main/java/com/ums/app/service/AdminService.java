@@ -1,5 +1,6 @@
 package com.ums.app.service;
 
+import com.ums.app.handler.AppException;
 import com.ums.app.model.Courses;
 import com.ums.app.model.User;
 import com.ums.app.repository.AdminRepository;
@@ -29,12 +30,12 @@ public class AdminService {
         return adminRepository.getAllUsers(role);
     }
 
-    public boolean addNewCourse(Courses courses) throws SQLException {
+    public boolean addNewCourse(Courses courses) throws AppException {
 
 
         boolean ok=adminRepository.checkCourseByCode(courses);
-        if (ok){
-            throw new SQLException();
+        if (!ok){
+            return false;
         }
 
        return adminRepository.AddNewCourse(courses);

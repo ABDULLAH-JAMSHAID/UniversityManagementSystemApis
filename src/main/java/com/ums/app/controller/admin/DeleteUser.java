@@ -7,7 +7,6 @@ import com.ums.app.util.JsonResponse;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,7 +14,7 @@ import java.sql.SQLException;
 
 
 @WebServlet(name = "DeleteStudentAndTeacher", urlPatterns = "/api/deleteUser/*")
-public class DeleteUser extends HttpServlet {
+public class DeleteUser extends BaseServlet {
 
     private final Gson gson=new Gson();
     private final AdminService adminService=new AdminService();
@@ -54,7 +53,7 @@ public class DeleteUser extends HttpServlet {
             JsonResponse.ok(resp,"Deleted Successfully");
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new ServletException(e);
         }
 
     }

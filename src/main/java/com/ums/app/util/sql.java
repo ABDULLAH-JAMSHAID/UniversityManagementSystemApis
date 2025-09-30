@@ -7,7 +7,7 @@ public class sql {
 
     public static final String insertStudent = "insert into ums.students (user_id) VALUES (?);";
 
-    public static final String assignRole="insert into ums.user_roles VALUES(?,?)";
+    public static final String assignRole="insert into ums.user_groups VALUES(?,?)";
 
     public static final String insertTeacher = "insert into ums.teachers (user_id) VALUES (?);";
 
@@ -26,7 +26,10 @@ public class sql {
 
     public static final String deleteUser="delete from ums.users where id=?";
 
-    public static final String getAllUsers="select * from ums.users where role=?";
+    public static final String getAllUsers="select u.id,u.username,u.full_name,u.email from ums.user_groups ug\n" +
+            "join ums.groups g on g.id=ug.group_id\n" +
+            "join ums.users u on u.id=ug.user_id\n" +
+            "where g.name=?";
 
     public static final String addNewCourse="insert into ums.courses (code,title,credit_hours ) VALUES (?,?,?)";
 

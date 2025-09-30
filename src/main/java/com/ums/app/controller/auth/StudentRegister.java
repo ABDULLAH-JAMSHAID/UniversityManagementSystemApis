@@ -40,9 +40,7 @@ public class StudentRegister extends HttpServlet {
 
             try{
                 User user =userRegisterService.registerStudent(userName.trim(),fullName,email.trim().toLowerCase(),password);
-                if (user!=null){
-                    JsonResponse.ok(resp,"Student Registered Successfully. Please Login");
-                }
+                JsonResponse.created(resp,"Student Registered Successfully. Please Login");
             }catch (SQLException e) {
                 if (e instanceof org.postgresql.util.PSQLException && "23505".equals(e.getSQLState())) {
                     // Duplicate email or username

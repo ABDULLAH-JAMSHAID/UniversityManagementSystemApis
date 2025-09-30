@@ -19,6 +19,11 @@ public class JsonResponse {
     public static void ok(HttpServletResponse resp, Object body) throws IOException {
         write(resp, HttpServletResponse.SC_OK, body);
     }
+    //  Generic error response with custom status and message
+    public static void error(HttpServletResponse resp, int status, String message) throws IOException {
+        write(resp, status, Map.of("error", message));
+    }
+
 
     //  Created response (201 Created)
     public static void created(HttpServletResponse resp, Object body) throws IOException {

@@ -4,12 +4,12 @@ import com.google.gson.Gson;
 import com.ums.app.annotation.RequiresPermission;
 import com.ums.app.model.Permission;
 import com.ums.app.model.User;
+import com.ums.app.repository.UserRepository;
 import com.ums.app.service.StudentService;
 import com.ums.app.util.JsonResponse;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -17,10 +17,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 @WebServlet(name = "Update User Profile",urlPatterns = "/api/updateUserProfile/*")
-public class UpdateUserProfile extends HttpServlet {
+public class UpdateUserProfile extends BaseServlet {
 
     private final Gson gson=new Gson();
     private final StudentService studentService=new StudentService();
+    private final UserRepository userRepository=new UserRepository();
 
     @Override
     @RequiresPermission(Permission.UPDATE_USER_PROFILE)
@@ -52,21 +53,18 @@ public class UpdateUserProfile extends HttpServlet {
                 JsonResponse.badRequest(resp, "Invalid ID format");
                 return;
             }
-
-            if (id!=uid) {
-                JsonResponse.forbidden(resp, "You can only Update your Own profile");
-                return;
+            if(!userRepository.getUserRoles(uid).contains("ADMIN")){
+                if (id!=uid) {
+                    JsonResponse.forbidden(resp, "You can only Update your Own profile");
+                    return;
+                }
             }
-
-
             User user=studentService.updateUserProfile(id,username,fullname,email);
             if (user==null){
                 JsonResponse.serverError(resp,"Could Not updated Due to Error");
             }
             JsonResponse.ok(resp,"Updated Successfully");
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 }

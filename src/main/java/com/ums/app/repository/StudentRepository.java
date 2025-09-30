@@ -3,7 +3,6 @@ package com.ums.app.repository;
 import com.ums.app.model.User;
 import com.ums.app.util.DBConnection;
 import com.ums.app.util.sql;
-import com.zaxxer.hikari.util.ConcurrentBag;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

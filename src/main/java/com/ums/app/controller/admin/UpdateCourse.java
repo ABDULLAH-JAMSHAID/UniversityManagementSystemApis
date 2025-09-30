@@ -7,7 +7,6 @@ import com.ums.app.service.AdminService;
 import com.ums.app.util.JsonResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -16,7 +15,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 @WebServlet(name = "UpdateCourse", urlPatterns = "/api/updateCourse/*")
-public class UpdateCourse extends HttpServlet {
+public class UpdateCourse extends BaseServlet {
 
     private final AdminService adminService=new AdminService();
     private final Gson gson=new Gson();

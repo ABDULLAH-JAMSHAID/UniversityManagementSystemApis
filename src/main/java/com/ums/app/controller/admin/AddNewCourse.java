@@ -49,16 +49,13 @@ public class AddNewCourse extends BaseServlet {
                 return;
             }
 
-            try {
+
                 boolean ok = adminService.addNewCourse(courses);
                 if (!ok) {
                     JsonResponse.serverError(resp, "Failed To Add Course");
                 } else {
                     JsonResponse.ok(resp, "Course Added Successfully");
                 }
-            } catch (SQLException e) {
-                JsonResponse.serverError(resp, "Course With This Code Already Exists");
-            }
         }
     }
 

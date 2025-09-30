@@ -1,9 +1,12 @@
 package com.ums.app.repository;
 
+import com.ums.app.handler.AppException;
 import com.ums.app.model.Courses;
 import com.ums.app.model.User;
 import com.ums.app.util.DBConnection;
 import com.ums.app.util.sql;
+import jakarta.servlet.http.HttpServletResponse;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -57,7 +60,7 @@ public class AdminRepository {
 
     }
 
-    public boolean AddNewCourse(Courses courses) throws SQLException {
+    public boolean AddNewCourse(Courses courses) {
 
         try(Connection connection=ds.getConnection();
         PreparedStatement preparedStatement=connection.prepareStatement(sql.addNewCourse)){
@@ -71,12 +74,14 @@ public class AdminRepository {
             if (rows>0){
                 return true;
             }
+        }catch (SQLException e) {
+            throw new AppException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
         }
         return false;
 
     }
 
-    public boolean checkCourseByCode(Courses courses) throws SQLException {
+    public boolean checkCourseByCode(Courses courses) {
 
         try(Connection connection=ds.getConnection();
         PreparedStatement preparedStatement=connection.prepareStatement(sql.checkCourseByCode)){
@@ -88,6 +93,8 @@ public class AdminRepository {
                 return true;
             }
 
+        } catch (SQLException e) {
+            throw new AppException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error: " + e.getMessage());
         }
         return false;
     }

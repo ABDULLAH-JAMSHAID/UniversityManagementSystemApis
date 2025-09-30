@@ -105,7 +105,7 @@ public class UserRepository {
 
     }
 
-        public List<String> getUserRoles(int userId) throws SQLException {
+        public List<String> getUserRoles(int userId) {
 
             try (Connection connection = ds.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(sql.getUserRoles)) {
@@ -120,10 +120,12 @@ public class UserRepository {
                     roles.add(rs.getString("name"));
                 }
                 return roles;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
 
-        public User findById(int id) throws SQLException {
+        public User findById(int id) {
 
             try(Connection connection=ds.getConnection();
                 PreparedStatement preparedStatement=connection.prepareStatement(sql.findUserById);){
@@ -142,6 +144,8 @@ public class UserRepository {
                     return user;
                 }
 
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
             return null;
 

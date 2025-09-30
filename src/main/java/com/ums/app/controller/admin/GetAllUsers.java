@@ -8,14 +8,13 @@ import com.ums.app.util.JsonResponse;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 @WebServlet(name = "GetAllUsers", urlPatterns = "/api/getAllUsers/*")
-public class GetAllUsers extends HttpServlet {
+public class GetAllUsers extends BaseServlet {
 
     private final AdminService adminService=new AdminService();
 
@@ -36,7 +35,7 @@ public class GetAllUsers extends HttpServlet {
         try {
             user = adminService.getAllUsers(requestedRole);
         } catch (SQLException e) {
-            JsonResponse.serverError(resp,"Internal Server Error");
+            throw new ServletException(e);
         }
 
         if (user==null ||user.isEmpty()){
